@@ -1,11 +1,10 @@
 import GenericService from "./GenericService";
-class ReaderServices extends GenericService {
+class PoetServices extends GenericService {
   constructor() {
     super();
   }
 
-  getPoets = () => this.get("admin/poets");
-  getPoetries = () => this.get("admin/poetries");
+  getPoetries = (id) => this.get(`poet/poetries/${id}`);
   requestPoet = (_id, data) => this.post("reader/request/poet/" + _id, data);
 
   addToCart = (_id, userId) => this.post("products/cart/" + _id, userId);
@@ -15,5 +14,5 @@ class ReaderServices extends GenericService {
   validateRequest = (id, data) =>
     this.post("/patient/checkdoctor/availability/" + id, data);
 }
-let readerServices = new ReaderServices();
-export default readerServices;
+let poetServices = new PoetServices();
+export default poetServices;
