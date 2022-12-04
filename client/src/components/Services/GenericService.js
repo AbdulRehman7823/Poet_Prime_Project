@@ -1,7 +1,7 @@
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:4000/api/";
 axios.defaults.headers.common["authorization"] =
-localStorage.getItem("accessToken");
+  localStorage.getItem("accessToken");
 axios.defaults.withCredentials = true;
 
 class GenericService {
