@@ -1,14 +1,19 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import FrontPage from "../../poet-app/src/components/Pages/FrontPage";
+import FrontPage from "../src/components/Pages/FrontPage";
 import LoginPage from "./components/Pages/LoginPage";
 import SignupPage from "./components/Pages/SignupPage";
 import ContactPage from "./components/Pages/ContactPage";
 import SellerHomePage from "./components/Pages/SellerPages/SellerHomePage";
 import SellerAddComponentPage from "./components/Pages/SellerPages/SellerAddComponentPage";
 import SellerDeleteComponentPage from "./components/Pages/SellerPages/SellerDeleteComponentPage";
-import SellerSubscriberPage from "./components/Pages/SellerPages/SellerSubscriberPage";
-import SellerRequestPages from "./components/Pages/SellerPages/SellerRequestPages";
+import SellerOrdersPage from "./components/Pages/SellerPages/SellerOrdersPage";
+import PoetCardList from "./components/PoetCard/PoetCardList";
+import Navbar from "./components/FrontPageComponents/Navbar/Navbar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import PoetryList from "./components/Poetries/PoetryList";
+import PoetPoetryList from "./components/PoetCard/PoetPoetryList";
 
 function App() {
   return (
