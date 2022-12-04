@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./style.css";
 import { FaKickstarter } from "react-icons/fa";
 import authServices from "../../Services/AuthServices";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import alert from "../../Services/Alert";
 import convertImageToBase64 from "../../ImageBase64";
 import { uploadImage } from "../../ImageUpload";
@@ -105,12 +105,12 @@ function SignUp() {
               />
             </div>
             <div className="mt-4">
-              <label className="block text-skin-base ">
+              <label className="block text-skin-base  ">
                 Select Account Type
               </label>
               <select
                 id="userType"
-                className="form-control dropdownMenu"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                 onChange={(e) => {
                   handleData("userType", e.target.value);
                 }}
@@ -162,12 +162,15 @@ function SignUp() {
 
           <p className="mt-2">
             Already have an account?
-            <a
-              type="button"
-              className="text-blue-500 hover:text-blue-700 font-semibold"
-            >
-              Login
-            </a>
+            <Link to={"/login"}>
+              {" "}
+              <a
+                type="button"
+                className="text-blue-500 hover:text-blue-700 font-semibold"
+              >
+                Login
+              </a>
+            </Link>
           </p>
 
           <p className="text-sm text-gray-500 mt-4">

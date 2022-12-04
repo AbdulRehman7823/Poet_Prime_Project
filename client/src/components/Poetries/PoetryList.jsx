@@ -4,11 +4,10 @@ import RiseLoader from "react-spinners/RiseLoader";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 import PoetryCard from "./PoetryCard";
-import { useLocation } from "react-router-dom";
+
 const PoetryList = () => {
-  const location = useLocation();
   const [loading, setLoading] = React.useState(false);
-  const [poetPoetries, setPoetPoetries] = useState(location.state.poetPoetries);
+
   const [poetries, setPoetries] = React.useState([
     {
       title: "Love",
@@ -28,19 +27,18 @@ const PoetryList = () => {
   ]);
   function getData() {
     setLoading(true);
-    if (!poetPoetries) {
-      readerServices
-        .getPoetries()
-        .then((data) => {
-          console.log(data);
-          //  setPoetries(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-    }
+
+    readerServices
+      .getPoetries()
+      .then((data) => {
+        console.log(data);
+        setPoetries(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   }
   const handleOnSearch = (string, results) => {
     console.log(string, results);
@@ -90,13 +88,24 @@ const PoetryList = () => {
             </div>
           </div>
         </div>
-        <div class="flex flex-wrap -m-4">
-          {poetries.map((poetry) => (
-            <div class="xl:w-1/4 md:w-1/2 w-full p-4">
-              <PoetryCard poetry={poetry}></PoetryCard>
-            </div>
-          ))}
+        <div className="flex justify-center">
+          <RiseLoader
+            color={"#2237ac"}
+            loading={loading}
+            css={"margin-top:400px"}
+          />
         </div>
+        {poetries.length === 0 && !loading ? (
+          <p>There is no poetry yet!</p>
+        ) : (
+          <div class="flex flex-wrap -m-4">
+            {poetries.map((poetry) => (
+              <div class="xl:w-1/4 md:w-1/2 w-full p-4">
+                <PoetryCard poetry={poetry}></PoetryCard>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

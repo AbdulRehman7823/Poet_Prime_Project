@@ -38,7 +38,6 @@ const PoetCardList = () => {
       </>
     );
   };
-
   React.useEffect(getData, []);
   return (
     <section class="text-gray-600 body-font">
@@ -67,13 +66,24 @@ const PoetCardList = () => {
             </div>
           </div>
         </div>
-        <div class="flex flex-wrap -m-4">
-          {poets.map((poet) => (
-            <div class="xl:w-1/4 md:w-1/2 w-full p-4">
-              <PoetCard poet={poet}></PoetCard>
-            </div>
-          ))}
+        <div className="flex justify-center">
+          <RiseLoader
+            color={"#2237ac"}
+            loading={loading}
+            css={"margin-top:400px"}
+          />
         </div>
+        {poets.length === 0 && !loading ? (
+          <p>There is no poet yet!</p>
+        ) : (
+          <div class="flex flex-wrap -m-4">
+            {poets.map((poet) => (
+              <div class="xl:w-1/4 md:w-1/2 w-full p-4">
+                <PoetCard poet={poet}></PoetCard>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

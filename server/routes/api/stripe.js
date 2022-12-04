@@ -1,30 +1,32 @@
 const express = require("express");
+const order = require("../../models/Order");
 const router = require("express").Router();
 const Product = require("../../models/Product");
 const stripe = require("stripe")(
   "sk_test_51KuvSGJ5s3GMFY7xzIibr4HHaFgEAiugF9pNWKZA7nrt2rdSemuLfgooccBNZ6PySxnnhkEEfUt5kCruaM6RtD9i00b31o46cp"
 );
 const endpointSecret = "whsec_kCLrcl7FJDOAeolDegmfdbFXMsJ80X8v";
-var orderedItems = [];
+
 router.post("/create-checkout", async (req, res) => {
-  orderedItems = req.body;
+  orderedItem = req.body.order;
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
-    line_items: req.body.map((item) => {
-      return {
+    line_items: [
+      {
         price_data: {
           currency: "usd",
           product_data: {
-            name: item.title,
+            name: orderedItem.plan,
           },
-          unit_amount: item.price,
+          unit_amount: orderedItem.price*100,
         },
-        quantity: item.orderQuantity,
-      };
-    }),
+        quantity: 1,
+      },
+    ],
 
     mode: "payment",
-    success_url: `${process.env.SERVER_URL}success/${orderedItems[0].userId}`,
+    success_url: `${process.env.SERVER_URL}success/`,
     cancel_url: `${process.env.SERVER_URL}cancel`,
   });
   res.status(200).send(session);

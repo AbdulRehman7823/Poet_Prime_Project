@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema(
     password: { type: String, required: true },
     phone: { type: String },
     city: { type: String },
-    img: { type: String },
+    img: { type: String, required: true },
     isAdmin: { type: Boolean },
     poetType: { type: String },
     requests: [

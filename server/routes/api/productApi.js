@@ -121,7 +121,7 @@ router.post("/", async (req, res) => {
     await product.save();
     return res.status(200).send(product);
   } catch (err) {
-    return res.status(500).send({ message: "This product is invalid" });
+    return res.status(422).send({ message: "This product is invalid" });
   }
 });
 

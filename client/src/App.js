@@ -14,11 +14,12 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PoetryList from "./components/Poetries/PoetryList";
 import PoetPoetryList from "./components/PoetCard/PoetPoetryList";
+import BuySubscription from "./components/PoetCard/BuySubscription";
 
 function App() {
   return (
     <Router>
-      <Navbar />
+      <Navbar></Navbar>
       <ToastContainer
         autoClose={1000}
         pauseOnHover={false}
@@ -39,6 +40,7 @@ function App() {
         <Route path="/poets" element={<PoetCardList />} />
         <Route path="/poetries" element={<PoetryList />} />
         <Route path="poet/poetries" element={<PoetPoetryList />} />
+        <Route path="poet/buysubscription" element={<BuySubscription />} />
       </Routes>
     </Router>
   );
