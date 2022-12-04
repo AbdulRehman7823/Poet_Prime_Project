@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import "./style.css";
 import { FaKickstarter } from "react-icons/fa";
 import authServices from "../../Services/AuthServices";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import alert from "../../Services/Alert";
-
+import convertImageToBase64 from "../../ImageBase64";
+import { uploadImage } from "../../ImageUpload";
+import FileUploader from "../../FileUploader";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -12,13 +14,14 @@ function SignUp() {
     username: "",
     email: "",
     password: "",
-    userType:""
+    userType: "",
+    img: "",
   });
+  const [imgUrl, setImgUrl] = useState("");
 
-
-  const  signUp=(e)=> {
+  const signUp = (e) => {
     e.preventDefault();
- 
+
     authServices
       .registerUser(data)
       .then((data) => {
@@ -29,10 +32,27 @@ function SignUp() {
         alert.showErrorAlert(err.response.data.message);
         console.log(err.response.data.message);
       });
-  }
+  };
   function handleData(key, value) {
     setData({ ...data, [key]: value });
   }
+  const onDrop = (acceptedFiles, rejectedFiles, imgName) => {
+    if (rejectedFiles.length > 0) {
+      alert.showWarningAlert("Upload only one image and size limit of 1 MB");
+      return;
+    } else if (acceptedFiles) {
+      convertImageToBase64(acceptedFiles[0], (result, success) => {
+        if (success) {
+          uploadImage(result, (url, success) => {
+            if (success) {
+              handleData("img", `${url}`);
+              setImgUrl(acceptedFiles[0].name);
+            }
+          });
+        }
+      });
+    }
+  };
 
   return (
     <section className=" flex flex-col md:flex-row h-screen items-center">
@@ -51,7 +71,7 @@ function SignUp() {
             Sign in with Us!
           </h1>
 
-          <form className="mt-6" >
+          <form className="mt-6">
             <div>
               <label className="block text-skin-base">Username</label>
               <input
@@ -85,21 +105,21 @@ function SignUp() {
               />
             </div>
             <div className="mt-4">
-                <label className="block text-skin-base " >
-                  Select Account Type
-                </label>
-                <select
-                  id="userType"
-                  className="form-control dropdownMenu"
-                  onChange={(e) => {
-                    handleData("userType", e.target.value);
-                  }}
-                  required
-                >
-                  <option value="poet">Poet</option>
-                  <option value="reader">Reader</option>
-                </select>
-              </div>
+              <label className="block text-skin-base  ">
+                Select Account Type
+              </label>
+              <select
+                id="userType"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+                onChange={(e) => {
+                  handleData("userType", e.target.value);
+                }}
+                required
+              >
+                <option value="poet">Poet</option>
+                <option value="reader">Reader</option>
+              </select>
+            </div>
 
             <div className="mt-4">
               <label className="block text-skin-base">Password</label>
@@ -117,8 +137,20 @@ function SignUp() {
                 }}
               />
             </div>
+            <div className="mt-4">
+              <label className="block text-skin-base">Upload an image</label>
+              <FileUploader
+                placeholder={imgUrl ? imgUrl : "Click here to upload"}
+                accept={["image/jpeg", "image/png", "image/bmp"]}
+                maxFiles={1}
+                maxSize={1000000}
+                onDrop={(acceptedFiles, rejectedFiles) =>
+                  onDrop(acceptedFiles, rejectedFiles, "frontSideImage")
+                }
+              />
+            </div>
             <button
-            onClick={signUp}
+              onClick={signUp}
               className="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg
                 px-4 py-3 mt-6"
             >
@@ -128,15 +160,17 @@ function SignUp() {
 
           <hr className="my-6 border-gray-300 w-full" />
 
-
           <p className="mt-2">
             Already have an account?
-            <a
-            type="button"
-              className="text-blue-500 hover:text-blue-700 font-semibold"
-            >
-              Login
-            </a>
+            <Link to={"/login"}>
+              {" "}
+              <a
+                type="button"
+                className="text-blue-500 hover:text-blue-700 font-semibold"
+              >
+                Login
+              </a>
+            </Link>
           </p>
 
           <p className="text-sm text-gray-500 mt-4">
@@ -146,9 +180,7 @@ function SignUp() {
       </div>
 
       <div className="main-bg-top hidden lg:block w-full md:w-1/2 xl:w-2/3 h-screen">
-      <div className="main-bg w-full h-full justify-center p-32">
-        
-        </div>
+        <div className="main-bg w-full h-full justify-center p-32"></div>
       </div>
     </section>
   );

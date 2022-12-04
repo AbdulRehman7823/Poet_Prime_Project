@@ -1,66 +1,88 @@
-import React from "react";
+import React, { useState } from "react";
 import readerServices from "../Services/ReaderServices";
 import RiseLoader from "react-spinners/RiseLoader";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
-import PoetCard from "./PoetCard";
-const PoetCardList = () => {
+
+import PoetryCard from "./PoetryCard";
+
+const PoetryList = () => {
   const [loading, setLoading] = React.useState(false);
-  const [poets, setPoets] = React.useState([]);
+
+  const [poetries, setPoetries] = React.useState([
+    {
+      title: "Love",
+      description:
+        "  Lorem ipsum dolor sit amet consectetur, adipisicing elit. A aperiam commodi saepe nulla architecto voluptatum possimus, laboriosam fugit cumque officia adipisci laudantium eum error quia eligendi doloremque temporibus ullam? Ratione",
+    },
+    {
+      title: "Sad",
+      description:
+        "  Lorem ipsum dolor sit amet consectetur, adipisicing elit. A aperiam commodi saepe nulla architecto voluptatum possimus, laboriosam fugit cumque officia adipisci laudantium eum error quia eligendi doloremque temporibus ullam? Ratione",
+    },
+    {
+      title: "Fun",
+      description:
+        "  Lorem ipsum dolor sit amet consectetur, adipisicing elit. A aperiam commodi saepe nulla architecto voluptatum possimus, laboriosam fugit cumque officia adipisci laudantium eum error quia eligendi doloremque temporibus ullam? Ratione",
+    },
+  ]);
   function getData() {
     setLoading(true);
+
     readerServices
-      .getPoets()
+      .getPoetries()
       .then((data) => {
         console.log(data);
-        setPoets(data);
+        setPoetries(data);
         setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   }
   const handleOnSearch = (string, results) => {
     console.log(string, results);
   };
-  const handleOnSelect = (poet) => {
-    setPoets([poet]);
+  const handleOnSelect = (poetry) => {
+    setPoetries([poetry]);
   };
   const handleClear = () => {
-    setPoets([]);
+    setPoetries([]);
     getData();
   };
   const formatResult = (poet) => {
     return (
       <>
         <span style={{ display: "block", textAlign: "left" }}>
-          {poet.username}
+          {poet.title}
         </span>
       </>
     );
   };
+
   React.useEffect(getData, []);
   return (
     <section class="text-gray-600 body-font">
       <div class="container px-5 py-24 mx-auto">
         <div className="flex flex-wrap justify-center md:justify-between m-6">
           <div className="w-1/2">
-            <h1 className="text-5xl">Poets</h1>
+            <h1 className="text-5xl">Poetries</h1>
           </div>
 
           <div>
             <div className="">
               <div style={{ width: 300 }}>
                 <ReactSearchAutocomplete
-                  items={poets}
-                  fuseOptions={{ keys: ["username"] }}
-                  resultStringKeyName="username"
+                  items={poetries}
+                  fuseOptions={{ keys: ["title"] }}
+                  resultStringKeyName="title"
                   onSelect={handleOnSelect}
                   onClear={handleClear}
                   formatResult={formatResult}
                   onSearch={handleOnSearch}
                   styling={{ zIndex: 4 }}
                   autoFocus
-                  placeholder="Search poet"
+                  placeholder="Search poetry by title"
                 />
               </div>
             </div>
@@ -73,13 +95,13 @@ const PoetCardList = () => {
             css={"margin-top:400px"}
           />
         </div>
-        {poets.length === 0 && !loading ? (
-          <p>There is no poet yet!</p>
+        {poetries.length === 0 && !loading ? (
+          <p>There is no poetry yet!</p>
         ) : (
           <div class="flex flex-wrap -m-4">
-            {poets.map((poet) => (
+            {poetries.map((poetry) => (
               <div class="xl:w-1/4 md:w-1/2 w-full p-4">
-                <PoetCard poet={poet}></PoetCard>
+                <PoetryCard poetry={poetry}></PoetryCard>
               </div>
             ))}
           </div>
@@ -89,4 +111,4 @@ const PoetCardList = () => {
   );
 };
 
-export default PoetCardList;
+export default PoetryList;

@@ -12,8 +12,6 @@ import { TbWorld } from "react-icons/tb";
 import {RiDeleteBin6Fill,RiLogoutBoxFill} from "react-icons/ri"
 import {GiProgression} from "react-icons/gi"
 import { useNavigate } from "react-router-dom";
-import { GoRequestChanges } from "react-icons/go"
-import { MdUnsubscribe } from "react-icons/md";
 
 import "./style.css";
 
@@ -45,18 +43,13 @@ function SellerNavigation({ children }) {
       icon: <RiDeleteBin6Fill />,
     },
     {
-      title: "Subscribers",
-      link: "/app/seller/subscribers",
-      icon: <MdUnsubscribe />,
-    },
-    {
-      title: "Requests",
-      link: "/app/seller/requests",
-      icon: <GoRequestChanges />,
+      title: "Orders",
+      link: "/app/seller/orders",
+      icon: <GiProgression />,
     },
     {
         title: "Help?",
-        link: "/contactus",
+        link: "/app/help",
         icon: <MdHelpCenter />,
         
       },
