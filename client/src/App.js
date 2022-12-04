@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import FrontPage from '../../poet-app/src/components/Pages/FrontPage'
+import FrontPage from './components/Pages/FrontPage'
 import LoginPage from './components/Pages/LoginPage';
 import SignupPage from './components/Pages/SignupPage';
 import ContactPage from './components/Pages/ContactPage';
@@ -13,7 +13,6 @@ import SellerRequestPages from './components/Pages/SellerPages/SellerRequestPage
 
 function App() {
   return (
-
     <Router>
       <Routes>
         <Route path="/" element={<FrontPage></FrontPage>}/>
@@ -29,5 +28,4 @@ function App() {
     </Router>
   )
 }
-
 export default App
